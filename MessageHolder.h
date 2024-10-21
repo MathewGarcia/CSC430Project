@@ -16,7 +16,7 @@ public:
 		return Command;
 	}
 
-	string GetMessage()
+	string GetActualMessage()
 	{
 		return Message;
 	}
