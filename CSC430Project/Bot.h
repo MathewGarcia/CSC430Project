@@ -2,6 +2,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "UserStates.h"
 
@@ -19,9 +20,9 @@ public:
 	string Listen(string& text);
 	void SetState(UserStates newState);
 	unique_ptr<MessageHolder> ParseString(string& text);
-	bool isCommand(string currentCommand);
+	bool isCommand(const string& currentCommand);
 
-	void executeCommand();
+	void executeCommand(const string& input);
 
 	map<string, UserStates>Commands;
 private:

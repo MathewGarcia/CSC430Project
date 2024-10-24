@@ -1,9 +1,11 @@
 #include "Bot.h"
 
 #include <iostream>
-
+#include <windows.h>
 #include "MessageHolder.h"
 #include <regex>
+
+#include "FindFile.h"
 
 using namespace std;
 
@@ -22,8 +24,9 @@ string Bot::Listen(string& text)
 			{
 				//set the state to the value of the map key.
 				SetState(it->second);
+				string message = currentMessage->GetActualMessage();
 				//run the command
-				executeCommand();
+				executeCommand(message);
 				return "succeeded";
 			}
 		}
@@ -57,20 +60,42 @@ unique_ptr<MessageHolder> Bot::ParseString(string& text)
 	return nullptr;
 }
 
-bool Bot::isCommand(string currentCommand)
+bool Bot::isCommand(const string& currentCommand)
 {
 	//check if it is a command
 	return Commands.find(currentCommand) != Commands.end();
 }
 
-void Bot::executeCommand()
+void Bot::executeCommand(const string& input)
 {
 	switch(currentState)
 	{
 	case findfile:
 		cout << "running find command" << endl;
+
+		vector<string> foundfiles;
+
+		string directory = "C:";
+
+
+		//smart pointer so that if lets say it is accidentally skipped, the memory will still be freed.
+		std::unique_ptr<FindFile> fileSearch = std::make_unique<FindFile>(directory, input, foundfiles);
+
+		fileSearch->execute();
+
+		if(foundfiles.size() == 0)
+		{
+			cout << "No files found: " << endl;
+		}
+		else
+		{
+			cout << "files found" << endl;
+			for (const auto& foundfile : foundfiles)
+			{
+				cout << foundfile << endl;
+			}
+		}
+
 		break;
-	default: cout << "default command" << endl;
 	}
 }
-
