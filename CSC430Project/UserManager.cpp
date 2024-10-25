@@ -13,7 +13,7 @@ void UserManager::signUp()
 
 		if (checkUserExists(username, email))
 		{
-			cout << "Username or email exists already! Try diffent one." << endl;
+			cout << "Username or email exists already! Try different one." << endl;
 			continue;
 		}
 		break;
