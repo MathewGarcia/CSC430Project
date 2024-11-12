@@ -7,6 +7,7 @@
 #include "Bot.h"
 #include "UserManager.h"
 
+
 using namespace std;
 
 int main()
@@ -14,9 +15,9 @@ int main()
 	while (1)
 	{
 
-		cout << "Welcome to File Bot! Please register or log in with an existing account." << endl;
-		cout << "1.Sign Up" << endl;
-		cout << "2.Sign In" << endl;
+		cout << "Welcome to File Bot! Please choose an option to get started." << endl;
+		cout << "Press 1 to Sign Up (Create a new account)" << endl;
+		cout << "Press 2 to Sign In (Log in with an existing account)" << endl;
 
 		int userChoice;
 		cin >> userChoice;
@@ -36,7 +37,7 @@ int main()
 			Bot* bot = new Bot(currentState);
 
 			string input;
-			cout << "Please enter a command to get started." << endl;
+			cout << "Please enter a command to get started.(Available Commands: /find)" << endl;
 			while (getline(cin, input))
 			{
 				string result = bot->Listen(input);
