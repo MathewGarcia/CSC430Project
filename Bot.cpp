@@ -12,8 +12,8 @@ using namespace std;
 string Bot::Listen(string& text)
 {
 	//here we create an auto pointer because parse string is returning a safe pointer. to MessageHolder
-	 auto currentMessage = ParseString(text);
-	 //check if current message exists, if not we don't want an nullptr exception
+	auto currentMessage = ParseString(text);
+	//check if current message exists, if not we don't want an nullptr exception
 	if (currentMessage) {
 		//check if we have a valid command
 		if (isCommand(currentMessage->GetCommand()))
@@ -27,16 +27,18 @@ string Bot::Listen(string& text)
 				string message = currentMessage->GetActualMessage();
 				//run the command
 				executeCommand(message);
-				return "succeeded";
+
+				// Return "succeeded" only if the message is not empty
+				return message.empty() ? "" : "succeeded";
 			}
 		}
 		else
 		{
-			return "That command doesn't exist.";
+			return "That command doesn't exist. Available commands: /find";
 		}
 	}
-	return "There was a problem with the current message sent";
-	
+	return "There was a problem with the current message sent.  Please ensure the command is entered in lowercase. Available commands: /find";
+
 }
 
 void Bot::SetState(UserStates newState)
@@ -71,6 +73,13 @@ void Bot::executeCommand(const string& input)
 	switch(currentState)
 	{
 	case findfile:
+
+		if (input.empty()) {  //checks if the filename is empty
+			cout << "Please provide a filename and its extension to search for.(eg. /find filename.txt)" << endl;
+			break;  // Exit the case without executing the search
+		}
+
+
 		cout << "running find command" << endl;
 
 		vector<string> foundfiles;
