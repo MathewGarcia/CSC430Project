@@ -1,0 +1,40 @@
+# Ignore Visual Studio temporary files and build results
+.vs/
+*.user
+*.rsuser
+*.suo
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.idb
+*.ipch
+*.o
+*.d
+*.dll
+*.lib
+*.exp
+*.vsidx
+*.obj
+*.exe
+*.tlog
+*.pdb
+*.log
+*.ilk
+*.vcxproj
+*.filters
+*.enc
+*.idb
+
+# Ignore build folders
+x64/
+Debug/
+Release/
+
+# Ignore generated files by Visual Studio
+*.vcxproj.user
+*.vcxproj.filters
+
+
