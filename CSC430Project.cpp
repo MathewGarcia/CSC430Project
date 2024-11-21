@@ -64,14 +64,14 @@ Bot bot(currentState,updateChat);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	const wchar_t CLASS_NAME[] = L"File Search Window Class";
 
-	WNDCLASS wc = {};
+	WNDCLASSW wc = {};
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = CLASS_NAME;
 
-	RegisterClass(&wc);
+	RegisterClassW(&wc);
 
-	HWND hwnd = CreateWindowEx(
+	HWND hwnd = CreateWindowExW(
 		0,
 		CLASS_NAME,
 		L"File Bot",
@@ -102,7 +102,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 	case WM_CREATE: {
 		// Create the chat log (multi-line edit box)
-		hChatLog = CreateWindowEx(
+		hChatLog = CreateWindowExW(
 			0, L"EDIT", NULL,
 			WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_READONLY | WS_VSCROLL,
 			10, 10, 560, 300,
@@ -110,7 +110,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the input box (single-line edit box)
-		hInputBox = CreateWindowEx(
+		hInputBox = CreateWindowExW(
 			0, L"EDIT", NULL,
 			WS_CHILD | WS_VISIBLE | WS_BORDER,
 			10, 320, 400, 20,
@@ -118,8 +118,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the send button
-		hSendButton = CreateWindow(
-			L"BUTTON", L"Send",
+		hSendButton = CreateWindowExW(
+			0,L"BUTTON", L"Send",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 			420, 320, 150, 20,
 			hwnd, (HMENU)1, NULL, NULL

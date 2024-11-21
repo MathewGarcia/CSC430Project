@@ -37,4 +37,16 @@ Release/
 *.vcxproj.user
 *.vcxproj.filters
 
+# Ignore CMake build directories
+out/build/
+*.ninja
+*.json
+*.bin
+*.cmake
+*.manifest
+*.res
+VSInheritEnvironments.txt
+CMakeCache.txt
+CMakeFiles/
+
 
