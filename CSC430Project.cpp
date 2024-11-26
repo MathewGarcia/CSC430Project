@@ -1,6 +1,6 @@
 
 // CSC430Project.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//SV-GUI 
 
 #include <iostream>
 
@@ -17,61 +17,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HWND hChatLog, hInputBox, hSendButton;
 UserStates currentState = none;
 void updateChat(string newText);
-Bot bot(currentState,updateChat);
-/*int main()
-{
-	while (1)
-	{
+Bot bot(currentState, updateChat);
 
-		cout << "Welcome to File Bot! Please choose an option to get started." << endl;
-		cout << "Press 1 to Sign Up (Create a new account)" << endl;
-		cout << "Press 2 to Sign In (Log in with an existing account)" << endl;
-
-		int userChoice;
-		cin >> userChoice;
-		cin.ignore();
-
-		UserManager newUserManager;
-		switch (userChoice)
-		{
-		case 1:
-			newUserManager.signUp();
-			continue;
-		case 2:
-			newUserManager.signIn();
-
-			UserStates currentState = none;
-
-			Bot* bot = new Bot(currentState);
-
-			string input;
-			cout << "Please enter a command to get started.(Available Commands: /find)" << endl;
-			while (getline(cin, input))
-			{
-				string result = bot->Listen(input);
-				cout << result << endl;
-			}
-
-			delete bot;
-			break;
-		}
-	}
-	
-	return 0;
-
-}*/
+/*
+Original File Bot code in a seperate txt
+*/
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	const wchar_t CLASS_NAME[] = L"File Search Window Class";
 
-	WNDCLASS wc = {};
+	WNDCLASSW wc = {};
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = CLASS_NAME;
 
-	RegisterClass(&wc);
+	RegisterClassW(&wc);
 
-	HWND hwnd = CreateWindowEx(
+	HWND hwnd = CreateWindowExW(
 		0,
 		CLASS_NAME,
 		L"File Bot",
@@ -84,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (hwnd == NULL) return 0;
 
 	ShowWindow(hwnd, nCmdShow);
-
+	
 
 
 	// Main message loop
@@ -102,7 +64,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 	case WM_CREATE: {
 		// Create the chat log (multi-line edit box)
-		hChatLog = CreateWindowEx(
+		hChatLog = CreateWindowExW(
 			0, L"EDIT", NULL,
 			WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_READONLY | WS_VSCROLL,
 			10, 10, 560, 300,
@@ -110,7 +72,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the input box (single-line edit box)
-		hInputBox = CreateWindowEx(
+		hInputBox = CreateWindowExW(
 			0, L"EDIT", NULL,
 			WS_CHILD | WS_VISIBLE | WS_BORDER,
 			10, 320, 400, 20,
@@ -118,8 +80,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the send button
-		hSendButton = CreateWindow(
-			L"BUTTON", L"Send",
+		hSendButton = CreateWindowExW(
+			0, L"BUTTON", L"Send",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 			420, 320, 150, 20,
 			hwnd, (HMENU)1, NULL, NULL
@@ -140,8 +102,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			string botresult = "";
 
 			string input(buffer);
-			botresult =	bot.Listen(input);
-			
+			botresult = bot.Listen(input);
+
 			// Append text to the chat log
 			std::string chatLog = "You: ";
 			chatLog += buffer;
