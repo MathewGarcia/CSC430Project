@@ -1,0 +1,3 @@
+C:/Users/leviathan/source/repos/CSC430Project/out/build/x64-Debug/CMakeFiles/CSC430Project.dir
+C:/Users/leviathan/source/repos/CSC430Project/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/leviathan/source/repos/CSC430Project/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
