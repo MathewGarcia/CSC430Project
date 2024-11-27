@@ -2,13 +2,10 @@
 11	251	7539340833039494	CMakeFiles/CSC430Project.dir/Command.cpp.obj	c3e148287a419340
 9	660	7539340837107188	CMakeFiles/CSC430Project.dir/Cancel.cpp.obj	69d2b57d9a116417
 28	250	7539340833014659	CMakeFiles/CSC430Project.dir/MessageHolder.cpp.obj	3b78dc9e58ae63e
-16	542	7539340835930092	CMakeFiles/CSC430Project.dir/DatabaseManager.cpp.obj	be02aca7a544a386
+10	665	7544429748016850	CMakeFiles/CSC430Project.dir/DatabaseManager.cpp.obj	be02aca7a544a386
 19	605	7539340836565821	CMakeFiles/CSC430Project.dir/FindFile.cpp.obj	9f5530eeba1ecf7b
 23	661	7539340837107188	CMakeFiles/CSC430Project.dir/Help.cpp.obj	f600d14c689567b1
 6	1035	7539340840857023	CMakeFiles/CSC430Project.dir/Bot.cpp.obj	cab0b2a18981e1d8
-31	566	7539340836148628	CMakeFiles/CSC430Project.dir/UserManager.cpp.obj	f745efa35a46d642
-23	999	7542836495840957	CMakeFiles/CSC430Project.dir/CSC430Project.cpp.obj	9bb57b603217915b
-1035	1284	7539340843236056	CSC430Project.exe	e3bbbcd536a11014
 13	661	7544429747967018	CMakeFiles/CSC430Project.dir/UserManager.cpp.obj	f745efa35a46d642
-10	665	7544429748016850	CMakeFiles/CSC430Project.dir/DatabaseManager.cpp.obj	be02aca7a544a386
 7	905	7544429750406636	CMakeFiles/CSC430Project.dir/CSC430Project.cpp.obj	9bb57b603217915b
+1035	1284	7539340843236056	CSC430Project.exe	e3bbbcd536a11014
