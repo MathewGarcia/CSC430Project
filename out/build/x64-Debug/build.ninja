@@ -130,7 +130,7 @@ build CMakeFiles\CSC430Project.dir\UserManager.cpp.obj: CXX_COMPILER__CSC430Proj
   TARGET_COMPILE_PDB = CMakeFiles\CSC430Project.dir\
   TARGET_PDB = CSC430Project.pdb
 
-build CMakeFiles\CSC430Project.dir\ButtonWindow.cpp.obj: CXX_COMPILER__CSC430Project_unscanned_Debug C$:\Users\leviathan\source\repos\CSC430Project\ButtonWindow.cpp || cmake_object_order_depends_target_CSC430Project
+build CMakeFiles\CSC430Project.dir\SignupWindow.cpp.obj: CXX_COMPILER__CSC430Project_unscanned_Debug C$:\Users\leviathan\source\repos\CSC430Project\SignupWindow.cpp || cmake_object_order_depends_target_CSC430Project
   DEFINES = -D_MBCS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17 -MDd
   INCLUDES = -I"C:\Program Files\mysql-connector-c++-9.1.0-winx64\include" -I"C:\Program Files\mysql-connector-c++-9.1.0-winx64\include\jdbc"
@@ -147,7 +147,7 @@ build CMakeFiles\CSC430Project.dir\ButtonWindow.cpp.obj: CXX_COMPILER__CSC430Pro
 #############################################
 # Link the executable CSC430Project.exe
 
-build CSC430Project.exe: CXX_EXECUTABLE_LINKER__CSC430Project_Debug CMakeFiles\CSC430Project.dir\Bot.cpp.obj CMakeFiles\CSC430Project.dir\Cancel.cpp.obj CMakeFiles\CSC430Project.dir\Command.cpp.obj CMakeFiles\CSC430Project.dir\CSC430Project.cpp.obj CMakeFiles\CSC430Project.dir\DatabaseManager.cpp.obj CMakeFiles\CSC430Project.dir\FindFile.cpp.obj CMakeFiles\CSC430Project.dir\Help.cpp.obj CMakeFiles\CSC430Project.dir\MessageHolder.cpp.obj CMakeFiles\CSC430Project.dir\UserManager.cpp.obj CMakeFiles\CSC430Project.dir\ButtonWindow.cpp.obj
+build CSC430Project.exe: CXX_EXECUTABLE_LINKER__CSC430Project_Debug CMakeFiles\CSC430Project.dir\Bot.cpp.obj CMakeFiles\CSC430Project.dir\Cancel.cpp.obj CMakeFiles\CSC430Project.dir\Command.cpp.obj CMakeFiles\CSC430Project.dir\CSC430Project.cpp.obj CMakeFiles\CSC430Project.dir\DatabaseManager.cpp.obj CMakeFiles\CSC430Project.dir\FindFile.cpp.obj CMakeFiles\CSC430Project.dir\Help.cpp.obj CMakeFiles\CSC430Project.dir\MessageHolder.cpp.obj CMakeFiles\CSC430Project.dir\UserManager.cpp.obj CMakeFiles\CSC430Project.dir\SignupWindow.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:windows  /SUBSYSTEM:WINDOWS
   LINK_LIBRARIES = mysqlcppconn.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

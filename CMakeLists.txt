@@ -27,7 +27,8 @@ add_executable(CSC430Project WIN32
     Help.cpp
     MessageHolder.cpp
     UserManager.cpp
-)
+    SignupWindow.cpp 
+    SignupWindow.h ) 
 
 # Link the necessary libraries
 target_link_libraries(CSC430Project mysqlcppconn)

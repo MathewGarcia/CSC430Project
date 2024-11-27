@@ -4,7 +4,7 @@
 
 class SignupWindow {
 public:
-	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);//processes messages sent to the window
+	static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);//processes messages sent to the window
 	void signWin(HINSTANCE hInstance,int nCmdShow);//Display window
 
 private:
