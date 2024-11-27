@@ -80,8 +80,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the send button
-		hSendButton = CreateWindowExW(
-			0, L"BUTTON", L"Send",
+		hSendButton = CreateWindow(
+			L"BUTTON", L"Send",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 			420, 320, 150, 20,
 			hwnd, (HMENU)1, NULL, NULL
