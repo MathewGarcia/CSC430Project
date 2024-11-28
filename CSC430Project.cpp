@@ -3,7 +3,7 @@
 //SV-GUI 
 
 #include <iostream>
-
+#include "StartWindow.h"
 #include "Bot.h"
 #include "UserManager.h"
 #include <windows.h>
@@ -24,6 +24,12 @@ Original File Bot code in a seperate txt
 */
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+	StartWindow sw;
+	sw.startWin(hInstance,nCmdShow);
+
+
+	
+	
 	const wchar_t CLASS_NAME[] = L"File Search Window Class";
 
 	WNDCLASSW wc = {};

@@ -4,7 +4,7 @@ project(CSC430Project)
 # Specify C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-D_MBCS)
+add_definitions(-DUNICODE -D_UNICODE)
 
 # Include MySQL Connector directories recursively
 set(MYSQL_BASE_DIR "C:/Program Files/mysql-connector-c++-9.1.0-winx64/include")
@@ -27,8 +27,8 @@ add_executable(CSC430Project WIN32
     Help.cpp
     MessageHolder.cpp
     UserManager.cpp
-    SignupWindow.cpp 
-    SignupWindow.h ) 
+    StartWindow.cpp 
+    StartWindow.h  "SignupWindow.cpp" "SignupWindow.h" "SignInWindow.cpp" "SignInWindow.h") 
 
 # Link the necessary libraries
 target_link_libraries(CSC430Project mysqlcppconn)
