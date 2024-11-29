@@ -7,12 +7,12 @@ set(CMAKE_CXX_STANDARD 17)
 add_definitions(-D_MBCS)
 
 # Include MySQL Connector directories recursively
-set(MYSQL_BASE_DIR "C:/Program Files/MySQL/MySQL Connector C++ 9.1/include")
+set(MYSQL_BASE_DIR "C:/Users/Harit/Documents/libraries/mysql-connector-c++-9.1.0-winx64/include")
 include_directories(${MYSQL_BASE_DIR})
 include_directories(${MYSQL_BASE_DIR}/jdbc)
 
 # Link MySQL Connector libraries
-set(MYSQL_LIB_DIR "C:/Program Files/MySQL/MySQL Connector C++ 9.1/lib64")
+set(MYSQL_LIB_DIR "C:/Users/Harit/Documents/libraries/mysql-connector-c++-9.1.0-winx64/lib64")
 link_directories(${MYSQL_LIB_DIR})
 link_directories(${MYSQL_LIB_DIR}/vs14)
 
