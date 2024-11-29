@@ -15,7 +15,7 @@ using namespace std;
 class Bot
 {
 public:
-	Bot(const UserStates& state, function<void(const string&)> updateChatCallBack) : currentState(state), updateChat(updateChatCallBack)
+	Bot(const UserStates& state, function<void(const string&)> updateChatCallBack) : currentState(state), updateChat(updateChatCallBack), hwnd(nullptr)
 	{
 		Commands.insert({ "find",findfile });
 		Commands.insert({ "help",help });
