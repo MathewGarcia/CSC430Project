@@ -1,9 +1,9 @@
 
 // CSC430Project.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//SV-GUI 
 
 #include <iostream>
-
+#include "StartWindow.h"
 #include "Bot.h"
 #include "UserManager.h"
 #include <windows.h>
@@ -17,51 +17,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 HWND hChatLog, hInputBox, hSendButton;
 UserStates currentState = none;
 void updateChat(string newText);
-Bot bot(currentState,updateChat);
-/*int main()
-{
-	while (1)
-	{
+Bot bot(currentState, updateChat);
 
-		cout << "Welcome to File Bot! Please choose an option to get started." << endl;
-		cout << "Press 1 to Sign Up (Create a new account)" << endl;
-		cout << "Press 2 to Sign In (Log in with an existing account)" << endl;
-
-		int userChoice;
-		cin >> userChoice;
-		cin.ignore();
-
-		UserManager newUserManager;
-		switch (userChoice)
-		{
-		case 1:
-			newUserManager.signUp();
-			continue;
-		case 2:
-			newUserManager.signIn();
-
-			UserStates currentState = none;
-
-			Bot* bot = new Bot(currentState);
-
-			string input;
-			cout << "Please enter a command to get started.(Available Commands: /find)" << endl;
-			while (getline(cin, input))
-			{
-				string result = bot->Listen(input);
-				cout << result << endl;
-			}
-
-			delete bot;
-			break;
-		}
-	}
-	
-	return 0;
-
-}*/
+/*
+Original File Bot code in a seperate txt
+*/
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+	StartWindow sw;
+	sw.startWin(hInstance,nCmdShow);
+
+
+	
+	
 	const wchar_t CLASS_NAME[] = L"File Search Window Class";
 
 	WNDCLASSW wc = {};
@@ -84,7 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (hwnd == NULL) return 0;
 
 	ShowWindow(hwnd, nCmdShow);
-
+	
 
 
 	// Main message loop
@@ -118,8 +86,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		);
 
 		// Create the send button
-		hSendButton = CreateWindowExW(
-			0,L"BUTTON", L"Send",
+		hSendButton = CreateWindow(
+			L"BUTTON", L"Send",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 			420, 320, 150, 20,
 			hwnd, (HMENU)1, NULL, NULL
@@ -140,23 +108,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			string botresult = "";
 
 			string input(buffer);
+			botresult = bot.Listen(input);
 
-			// Append user message to the chat log
+			// Append text to the chat log
 			std::string chatLog = "You: ";
 			chatLog += buffer;
 			chatLog += "\r\n";
+			chatLog += "Bot: ";
+			chatLog += botresult;
+			chatLog += "\r\n";
+
+
 			updateChat(chatLog);
-
-			// Append bot label to the chat log
-			updateChat("Bot: ");
-
-			// Get the response from the bot
-			botresult = bot.Listen(input);
-
-			// Append bot response to the chat log
-			if (!botresult.empty()) {
-				updateChat(botresult + "\r\n");
-			}
 
 			// Clear the input box
 			SetWindowTextA(hInputBox, "");
@@ -172,7 +135,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		string* msg = (string*)lParam;
 		updateChat(*msg + "\r\n");
 		delete msg;
-		break; // Added break to prevent fallthrough
 	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
