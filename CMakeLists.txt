@@ -4,7 +4,7 @@ project(CSC430Project)
 # Specify C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-D_MBCS)
+add_definitions(-D_UNICODE -DUNICODE)
 
 # Include MySQL Connector directories recursively
 set(MYSQL_BASE_DIR "C:/Users/Harit/Documents/libraries/mysql-connector-c++-9.1.0-winx64/include")
