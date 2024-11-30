@@ -108,23 +108,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			string botresult = "";
 
 			string input(buffer);
-			botresult = bot.Listen(input);
 
-			// Append text to the chat log
+			// Append user message to the chat log
 			std::string chatLog = "You: ";
 			chatLog += buffer;
 			chatLog += "\r\n";
-			chatLog += "Bot: ";
-			chatLog += botresult;
-			chatLog += "\r\n";
-
-
 			updateChat(chatLog);
+
+			// Append bot label to the chat log
+			updateChat("Bot: ");
+
+			// Get the response from the bot
+			botresult = bot.Listen(input);
+
+			// Append bot response to the chat log
+			if (!botresult.empty()) {
+				updateChat(botresult + "\r\n");
+			}
 
 			// Clear the input box
 			SetWindowTextA(hInputBox, "");
-
 		}
+
 		break;
 
 	case WM_DESTROY:
@@ -135,6 +140,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		string* msg = (string*)lParam;
 		updateChat(*msg + "\r\n");
 		delete msg;
+		break; // Added break to prevent fallthrough
 	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
