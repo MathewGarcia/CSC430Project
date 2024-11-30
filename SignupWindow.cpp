@@ -64,3 +64,11 @@ LRESULT CALLBACK SignupWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 	return 0;
 
 }
+
+void SignupWindow::OpenSignUp(HWND parentHwnd) {
+	MessageBoxW(parentHwnd, L"Sign Up Window Functionality Coming Soon", L"Sign Up", MB_OK);
+}
+
+void SignupWindow::OpenSignIn(HWND parentHwnd) {
+	MessageBoxW(parentHwnd, L"Sign In Window Functionality Coming Soon", L"Sign In", MB_OK);
+}

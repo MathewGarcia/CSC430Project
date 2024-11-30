@@ -32,6 +32,7 @@
 x64/
 Debug/
 Release/
+build/
 
 # Ignore generated files by Visual Studio
 *.vcxproj.user

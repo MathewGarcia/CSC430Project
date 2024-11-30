@@ -27,6 +27,10 @@ add_executable(CSC430Project WIN32
     Help.cpp
     MessageHolder.cpp
     UserManager.cpp
+    StartWindow.cpp
+    StartWindow.h
+    SignupWindow.cpp
+    SignupWindow.h
 )
 
 # Link the necessary libraries
