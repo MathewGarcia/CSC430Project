@@ -7,10 +7,10 @@ using namespace std;
 class UserManager
 {
 public:
-	void signUp();
-	void signIn();
+    void signUp();
+    void signIn();
+    bool checkUserExists(const string& username, const string& email); // Moved to public section
 
 private:
-	DatabaseManager newDBmanager;
-	bool checkUserExists(const string& username, const string& email);
+    DatabaseManager newDBmanager;
 };
