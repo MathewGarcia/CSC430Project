@@ -1,6 +1,6 @@
 #include "DatabaseManager.h"
 
-DatabaseManager::DatabaseManager()
+DatabaseManager::DatabaseManager() : pstmt(nullptr), res(nullptr) // Initialize pstmt and res to nullptr
 {
 	//Initialize MySQL Driver
 	driver = sql::mysql::get_mysql_driver_instance();
