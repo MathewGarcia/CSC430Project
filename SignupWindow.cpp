@@ -2,6 +2,7 @@
 #include <string>
 #include "USER.h"
 #include "UserManager.h"
+#include "DatabaseAPI.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void SignupWindow::signWin(HINSTANCE hInstance, int nCmdShow) {
     wc.lpszClassName = CLASS_NAME;
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // Sets the background to the default window color
     RegisterClassW(&wc);
-	//added new styles to fix resizing issues
+    //added new styles to fix resizing issues
     HWND hwnd = CreateWindowExW(0, CLASS_NAME, L"Sign Up", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME, CW_USEDEFAULT, CW_USEDEFAULT, 600, 400, NULL, NULL, hInstance, this);
     if (hwnd == NULL) return;
 
@@ -31,14 +32,14 @@ void SignupWindow::signWin(HINSTANCE hInstance, int nCmdShow) {
 
 // Window procedure for handling messages sent to the signup window
 LRESULT CALLBACK SignupWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	SignupWindow* pThis = nullptr; // Pointer to the current instance of SignupWindow
-    
-	if (msg == WM_CREATE) { // If the window is being created   
-		pThis = (SignupWindow*)((LPCREATESTRUCT)lParam)->lpCreateParams; // Retrieve the pointer to the SignupWindow instance from the window creation parameters
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pThis); // Store the pointer in the window's user data
+    SignupWindow* pThis = nullptr; // Pointer to the current instance of SignupWindow
 
-		// Helper lambda to set up label and textbox pairs to reduce boilerplate code
-		auto createControl = [&](LPCWSTR label, int y, HWND& editHandle) {
+    if (msg == WM_CREATE) { // If the window is being created   
+        pThis = (SignupWindow*)((LPCREATESTRUCT)lParam)->lpCreateParams; // Retrieve the pointer to the SignupWindow instance from the window creation parameters
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pThis); // Store the pointer in the window's user data
+
+        // Helper lambda to set up label and textbox pairs to reduce boilerplate code
+        auto createControl = [&](LPCWSTR label, int y, HWND& editHandle) {
             CreateWindowW(L"STATIC", label, WS_VISIBLE | WS_CHILD, 50, y, 120, 20, hwnd, NULL, NULL, NULL);
             editHandle = CreateWindowW(L"EDIT", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 180, y, 200, 20, hwnd, NULL, NULL, NULL);
             };
@@ -60,15 +61,15 @@ LRESULT CALLBACK SignupWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
     }
 
     switch (msg) {
-	case WM_CTLCOLORSTATIC: { // Set text color and background for static controls(eg. username, email, password, repeat password)
+    case WM_CTLCOLORSTATIC: { // Set text color and background for static controls(eg. username, email, password, repeat password)
         HDC hdcStatic = (HDC)wParam;
         SetBkMode(hdcStatic, TRANSPARENT);  // Make label background transparent
         SetTextColor(hdcStatic, RGB(0, 0, 0));  // Set text color to black for readability
-        return (INT_PTR)GetStockObject(NULL_BRUSH); 
+        return (INT_PTR)GetStockObject(NULL_BRUSH);
     }
     case WM_COMMAND:
-		if (LOWORD(wParam) == 1) pThis->handleSignup(hwnd); // Submit button clicked then handle signup
-		else if (LOWORD(wParam) == 2) pThis->navigateBack(hwnd); // Back button clicked then navigate back
+        if (LOWORD(wParam) == 1) pThis->handleSignup(hwnd); // Submit button clicked then handle signup
+        else if (LOWORD(wParam) == 2) pThis->navigateBack(hwnd); // Back button clicked then navigate back
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
@@ -84,16 +85,16 @@ LRESULT CALLBACK SignupWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARA
 void SignupWindow::handleSignup(HWND hwnd) {
     // Retrieve text from input fields
     wchar_t username[100], email[100], password[100], repeatPassword[100];
-    GetWindowTextW(hUsername, username, 100); 
+    GetWindowTextW(hUsername, username, 100);
     GetWindowTextW(hEmail, email, 100);
     GetWindowTextW(hPassword, password, 100);
     GetWindowTextW(hRepeatPassword, repeatPassword, 100);
 
     // Convert wchar_t to string
-    string sUsername(username, username + wcslen(username));
-    string sEmail(email, email + wcslen(email));
-    string sPassword(password, password + wcslen(password));
-    string sRepeatPassword(repeatPassword, repeatPassword + wcslen(repeatPassword));
+    std::string sUsername(username, username + wcslen(username));
+    std::string sEmail(email, email + wcslen(email));
+    std::string sPassword(password, password + wcslen(password));
+    std::string sRepeatPassword(repeatPassword, repeatPassword + wcslen(repeatPassword));
 
     // Check for empty fields
     if (sUsername.empty() || sEmail.empty() || sPassword.empty() || sRepeatPassword.empty()) {
@@ -113,42 +114,26 @@ void SignupWindow::handleSignup(HWND hwnd) {
         return;
     }
 
-    // Create an instance of UserManager to check if the user already exists
+    // Delegate the sign-up process to UserManager
     UserManager userManager;
 
     try {
-        // Check if the user already exists in the database
-        if (userManager.checkUserExists(sUsername, sEmail)) {
+        // Use UserManager's sign-up method
+        DatabaseAPI dbAPI; // Instantiate the API object
+        if (dbAPI.UserSignUp(sUsername, sPassword, sEmail)) {
+            MessageBoxW(hwnd, L"Sign-up successful!", L"Success", MB_OK | MB_ICONINFORMATION);
+            navigateBack(hwnd);  // Navigate back to startup page
+        }
+        else {
             MessageBoxW(hwnd, L"Username or email already exists. Please try a different one.", L"Error", MB_OK | MB_ICONERROR);
-            return;
         }
     }
-    catch (sql::SQLException& e) {
-        // Display a database error message if something goes wrong during the check
-        wstring errorMsg = L"Database error while checking user existence: ";
-        errorMsg += wstring(e.what(), e.what() + strlen(e.what()));
-        MessageBoxW(hwnd, errorMsg.c_str(), L"Database Error", MB_OK | MB_ICONERROR);
-        return;
+    catch (std::exception& e) {
+        // Handle generic exceptions from the sign-up process
+        std::wstring errorMsg = L"An error occurred during sign-up: ";
+        errorMsg += std::wstring(e.what(), e.what() + strlen(e.what()));
+        MessageBoxW(hwnd, errorMsg.c_str(), L"Error", MB_OK | MB_ICONERROR);
     }
-
-    // Insert the new user into the database
-    try {
-        if (!dbManager.insert_user(USER(sUsername, sPassword, sEmail))) {
-            MessageBoxW(hwnd, L"Failed to sign up. Please try again.", L"Error", MB_OK | MB_ICONERROR);
-            return;
-        }
-    }
-    catch (sql::SQLException& e) {
-        // Display a generic database error message if the insert fails
-        wstring errorMsg = L"Database error while inserting user: ";
-        errorMsg += wstring(e.what(), e.what() + strlen(e.what()));
-        MessageBoxW(hwnd, errorMsg.c_str(), L"Database Error", MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    // If everything is successful, show a success message
-    MessageBoxW(hwnd, L"Sign-up successful!", L"Success", MB_OK | MB_ICONINFORMATION);
-    navigateBack(hwnd);  // Navigate back to startup page
 }
 
 
