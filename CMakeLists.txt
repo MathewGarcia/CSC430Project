@@ -4,17 +4,11 @@ project(CSC430Project)
 # Specify C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-D_UNICODE -DUNICODE)
+add_definitions(-D_MBCS)
 
-# Include MySQL Connector directories recursively
-set(MYSQL_BASE_DIR "C:/Users/Harit/Documents/libraries/mysql-connector-c++-9.1.0-winx64/include")
-include_directories(${MYSQL_BASE_DIR})
-include_directories(${MYSQL_BASE_DIR}/jdbc)
-
-# Link MySQL Connector libraries
-set(MYSQL_LIB_DIR "C:/Users/Harit/Documents/libraries/mysql-connector-c++-9.1.0-winx64/lib64")
-link_directories(${MYSQL_LIB_DIR})
-link_directories(${MYSQL_LIB_DIR}/vs14)
+# Include libcurl directories
+find_package(CURL REQUIRED) # Automatically finds libcurl if installed
+include_directories(${CURL_INCLUDE_DIRS})
 
 # Add executable target
 add_executable(CSC430Project WIN32
@@ -27,13 +21,9 @@ add_executable(CSC430Project WIN32
     Help.cpp
     MessageHolder.cpp
     UserManager.cpp
-    StartWindow.cpp
-    StartWindow.h
-    SignupWindow.cpp
-    SignupWindow.h
 )
 
 # Link the necessary libraries
-target_link_libraries(CSC430Project mysqlcppconn)
+target_link_libraries(CSC430Project ${CURL_LIBRARIES})
 
 target_link_options(CSC430Project PRIVATE /SUBSYSTEM:WINDOWS)
