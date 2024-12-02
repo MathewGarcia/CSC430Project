@@ -1,96 +1,69 @@
+#define CURL_STATICLIB
+
 #include "UserManager.h"
-
 #include <iostream>
-#include <ostream>
 #include <string>
+#include "DatabaseAPI.h"
 
-void UserManager::signUp() 
+
+
+using namespace std;
+
+void UserManager::signIn()
 {
-	string username, email, password, repeatedPW;
+	string username, password;
 
 	while (1)
 	{
 		cout << "Enter username: ";
 		getline(cin, username);
-		cout << "Enter email: ";
-		getline(cin, email);
-
-		if (checkUserExists(username, email))
-		{
-			cout << "Username or email exists already! Try different one." << endl;
-			continue;
-		}
-		break;
-	}
-
-	while (1)
-	{
 		cout << "Enter password: ";
 		getline(cin, password);
-		cout << "Repeat password: ";
-		getline(cin, repeatedPW);
 
-		if (password == repeatedPW)
+		DatabaseAPI NewAPI;
+		if (NewAPI.UserLoginAuthentication(username, password) == true)
+		{
+			cout << "Login Success!" << endl;
 			break;
+		}
 		else
-			cout << "Passwords do not match. Please try again." << endl;
+		{
+			cout << "Login Fail!" << endl;
+			continue;
+		}
+			
+		
+
 	}
-
-	USER newUser(username, password, email);
-
-	
-	if (!newDBmanager.insert_user(newUser))
-		cout << "Problem occured when insert a new user" << endl;
-	else
-		cout << "Sign up successfully." << endl;
-
 }
 
-bool UserManager::checkUserExists(const string& username, const string& email)
+
+void UserManager::signUp()
 {
-	std::string query = "SELECT * FROM Users WHERE username = ? OR email = ?";
-
-	newDBmanager.pstmt = newDBmanager.con->prepareStatement(query);
-	newDBmanager.pstmt->setString(1, username);
-	newDBmanager.pstmt->setString(2, email);
-
-	newDBmanager.res = newDBmanager.pstmt->executeQuery();
-	if (newDBmanager.res->next())
-		return true;
-
-	return false;
-}
-
-void UserManager::signIn()
-{
-	std::string username, password;
+	string username, password, email;
 
 	while (1)
 	{
-		std::cout << "Enter username: ";
-		getline(std::cin, username);
-		std::cout << "Enter password: ";
-		getline(std::cin, password);
+		cout << "Enter new username: ";
+		getline(cin, username);
+		cout << "Enter new password: ";
+		getline(cin, password);
+		cout << "Enter new email: ";
+		getline(cin, email);
 
-		std::string query = "SELECT * FROM Users WHERE username = ? AND password_hash = ?";
-
-		newDBmanager.pstmt = newDBmanager.con->prepareStatement(query);
-		newDBmanager.pstmt->setString(1, username);
-		newDBmanager.pstmt->setString(2, password);
-
-		newDBmanager.res = newDBmanager.pstmt->executeQuery();
-
-		if (newDBmanager.res->next())
+		DatabaseAPI NewAPI;
+		if (NewAPI.UserSignUp(username, password, email) == true)
 		{
-			std::cout << "Sign-in succeeded" << std::endl;
+			cout << "SignUp Success!" << endl;
 			break;
 		}
 		else
 		{
-			std::cout << "Incorrect username or password" << std::endl;
+			cout << "SignUp Fail!" << endl;
 			continue;
 		}
 
+
+
 	}
 }
-
