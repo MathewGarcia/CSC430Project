@@ -1,6 +1,5 @@
 #include <iostream>
 #include "DatabaseAPI.h"
-#include <json/json.h>
 #include "curl/curl.h"
 
 
