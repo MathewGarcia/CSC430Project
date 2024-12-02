@@ -11,6 +11,6 @@ private:
 	HWND hSignUp;
 	HWND hSignIn;
 
-	void OpenSignUp(HWND parentHwnd);
+	//void OpenSignUp(HWND parentHwnd);
 	void OpenSignIn(HWND parentHwnd);
 };
