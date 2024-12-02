@@ -93,6 +93,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			hwnd, (HMENU)1, NULL, NULL
 		);
 
+		// Create and set font for input box in one line
+		SendMessage(hInputBox, WM_SETFONT, (WPARAM)CreateFont(24, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial"), TRUE);
+
 		bot.setHwnd(hwnd);
 
 		//first time opening application.
@@ -131,6 +134,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		}
 
 		break;
+
+	case WM_PAINT: {
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hwnd, &ps);
+		// Fill the window with a white background
+		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+		EndPaint(hwnd, &ps);
+		break;
+	}
+
+    case WM_SIZE: {
+        // Get the new dimensions of the window
+        int width = LOWORD(lParam);
+        int height = HIWORD(lParam);
+
+        // Resize the chat log
+        SetWindowPos(hChatLog, NULL, 10, 10, width - 20, height - 80, SWP_NOZORDER);
+
+        // Resize the input box (increased height)
+        SetWindowPos(hInputBox, NULL, 10, height - 60, width - 180, 30, SWP_NOZORDER);
+
+        // Resize the send button (adjusted position)
+        SetWindowPos(hSendButton, NULL, width - 160, height - 60, 150, 30, SWP_NOZORDER);
+
+        break;
+    }
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
