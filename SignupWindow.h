@@ -11,7 +11,6 @@ public:
 
 private:
     HWND hUsername = nullptr, hEmail = nullptr, hPassword = nullptr, hRepeatPassword = nullptr, hSubmitButton = nullptr, hBackButton = nullptr; // Handles for controls
-    DatabaseManager dbManager; // To check for duplicate usernames or emails and insert new users
 
     void handleSignup(HWND hwnd);  // Function to handle signup logic
     void navigateBack(HWND hwnd);  // Function to handle back navigation
