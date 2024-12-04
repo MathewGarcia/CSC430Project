@@ -79,9 +79,9 @@ bool DatabaseAPI::UserSignUp(const std::string& username, const std::string& pas
         "email": ")" + email + R"("
     })";
 
-    // Debug: Log the JSON payload
-    std::wstring debugPayload = L"Constructed JSON Payload: " + std::wstring(jsonData.begin(), jsonData.end());
-    MessageBoxW(NULL, debugPayload.c_str(), L"Debug - JSON Payload", MB_OK);
+    // Debug: Log the JSON payload(used to identify the insert user bug)
+    // std::wstring debugPayload = L"Constructed JSON Payload: " + std::wstring(jsonData.begin(), jsonData.end());
+    // MessageBoxW(NULL, debugPayload.c_str(), L"Debug - JSON Payload", MB_OK);
 
     // Initialize curl
     curl = curl_easy_init();
@@ -102,46 +102,37 @@ bool DatabaseAPI::UserSignUp(const std::string& username, const std::string& pas
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
 
-        // Enable verbose output for debugging
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+        // Enable verbose output for debugging(used to identify the insert user bug)
+        // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
         // Perform the request
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            // Debug: Log CURL errors
-            std::wstring curlError = L"CURL Error: " + std::wstring(curl_easy_strerror(res), curl_easy_strerror(res) + strlen(curl_easy_strerror(res)));
-            MessageBoxW(NULL, curlError.c_str(), L"Debug - CURL Error", MB_OK);
+            // Debug: Log CURL errors(used to identify the insert user bug)
+            // std::wstring curlError = L"CURL Error: " + std::wstring(curl_easy_strerror(res), curl_easy_strerror(res) + strlen(curl_easy_strerror(res)));
+            // MessageBoxW(NULL, curlError.c_str(), L"Debug - CURL Error", MB_OK);
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
             return false;
         }
         else {
-            // Debug: Log the API response
-            std::wstring debugResponse = L"API Response: " + std::wstring(responseString.begin(), responseString.end());
-            MessageBoxW(NULL, debugResponse.c_str(), L"Debug - API Response", MB_OK);
+            // Debug: Log the API response(used to identify the insert user bug)
+            // std::wstring debugResponse = L"API Response: " + std::wstring(responseString.begin(), responseString.end());
+            // MessageBoxW(NULL, debugResponse.c_str(), L"Debug - API Response", MB_OK);
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
             // Analyze the response
-            // It's better to parse the JSON response instead of a simple string comparison
-            // For simplicity, let's log it and return true if the HTTP status is 200
-
             long http_code = 0;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
-            if (http_code == 200) {
-                return true;
-            }
-            else {
-                std::wstring errorMsg = L"API responded with status code: " + std::to_wstring(http_code);
-                MessageBoxW(NULL, errorMsg.c_str(), L"Error - HTTP Status", MB_OK | MB_ICONERROR);
-                return false;
-            }
+            return (http_code == 200);
         }
     }
     else {
-        MessageBoxW(NULL, L"Failed to initialize CURL.", L"Error - CURL Init", MB_OK | MB_ICONERROR);
+        // MessageBoxW(NULL, L"Failed to initialize CURL.", L"Error - CURL Init", MB_OK | MB_ICONERROR);(used to identify the insert user bug)
+        std::cerr << "Failed to initialize CURL." << std::endl;
     }
     return false;  // Fallback if curl initialization fails
 }
