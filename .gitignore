@@ -13,8 +13,6 @@
 *.ipch
 *.o
 *.d
-*.dll
-*.lib
 *.exp
 *.vsidx
 *.obj
@@ -29,7 +27,6 @@
 *.idb
 
 # Ignore build folders
-x64/
 Debug/
 Release/
 build/
@@ -50,4 +47,9 @@ VSInheritEnvironments.txt
 CMakeCache.txt
 CMakeFiles/
 
+# Allow third_party libraries
+!third_party/curl/lib/
+!third_party/zlib/lib/
+!third_party/openssl/lib/
+!third_party/openssl/include/
 
