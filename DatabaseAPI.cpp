@@ -1,8 +1,6 @@
 #include <iostream>
+#include <curl/curl.h>
 #include "DatabaseAPI.h"
-#include <json/json.h>
-#include "curl/curl.h"
-
 
 size_t DatabaseAPI::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response) {
     size_t totalSize = size * nmemb;
@@ -10,9 +8,7 @@ size_t DatabaseAPI::WriteCallback(void* contents, size_t size, size_t nmemb, std
     return totalSize;
 }
 
-bool DatabaseAPI::UserLoginAuthentication(const string& username, const string& password)
-{
-
+bool DatabaseAPI::UserLoginAuthentication(const std::string& username, const std::string& password) {
     CURL* curl;
     CURLcode res;
 
@@ -52,8 +48,7 @@ bool DatabaseAPI::UserLoginAuthentication(const string& username, const string& 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
             return false;
-        }
-        else {
+        } else {
             /*std::cout << "Response from Supabase (Login): " << responseString << std::endl;*/
 
             curl_slist_free_all(headers);
@@ -63,15 +58,14 @@ bool DatabaseAPI::UserLoginAuthentication(const string& username, const string& 
                 return true;
             else
                 return false;
-
         }
-
+    } else {
+        std::cerr << "Failed to initialize CURL." << std::endl;
+        return false;
     }
-
 }
 
-bool DatabaseAPI::UserSignUp(const string& username, const string& password, const string& email)
-{
+bool DatabaseAPI::UserSignUp(const std::string& username, const std::string& password, const std::string& email) {
     CURL* curl;
     CURLcode res;
 
@@ -82,8 +76,12 @@ bool DatabaseAPI::UserSignUp(const string& username, const string& password, con
     std::string jsonData = R"({
         "username": ")" + username + R"(",
         "password": ")" + password + R"(",
-		"email": ")" + email + R"("
+        "email": ")" + email + R"("
     })";
+
+    // Debug: Log the JSON payload
+    std::wstring debugPayload = L"Constructed JSON Payload: " + std::wstring(jsonData.begin(), jsonData.end());
+    MessageBoxW(NULL, debugPayload.c_str(), L"Debug - JSON Payload", MB_OK);
 
     // Initialize curl
     curl = curl_easy_init();
@@ -104,25 +102,46 @@ bool DatabaseAPI::UserSignUp(const string& username, const string& password, con
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
 
+        // Enable verbose output for debugging
+        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
         // Perform the request
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            // Debug: Log CURL errors
+            std::wstring curlError = L"CURL Error: " + std::wstring(curl_easy_strerror(res), curl_easy_strerror(res) + strlen(curl_easy_strerror(res)));
+            MessageBoxW(NULL, curlError.c_str(), L"Debug - CURL Error", MB_OK);
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
             return false;
         }
         else {
-            /*std::cout << "Response from Supabase (Sign-Up): " << responseString << std::endl;*/
+            // Debug: Log the API response
+            std::wstring debugResponse = L"API Response: " + std::wstring(responseString.begin(), responseString.end());
+            MessageBoxW(NULL, debugResponse.c_str(), L"Debug - API Response", MB_OK);
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
-            if (responseString == "true")
+            // Analyze the response
+            // It's better to parse the JSON response instead of a simple string comparison
+            // For simplicity, let's log it and return true if the HTTP status is 200
+
+            long http_code = 0;
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+            if (http_code == 200) {
                 return true;
-            else
+            }
+            else {
+                std::wstring errorMsg = L"API responded with status code: " + std::to_wstring(http_code);
+                MessageBoxW(NULL, errorMsg.c_str(), L"Error - HTTP Status", MB_OK | MB_ICONERROR);
                 return false;
+            }
         }
     }
+    else {
+        MessageBoxW(NULL, L"Failed to initialize CURL.", L"Error - CURL Init", MB_OK | MB_ICONERROR);
+    }
+    return false;  // Fallback if curl initialization fails
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
-#include "DatabaseManager.h"
+#include "DatabaseAPI.h"
+
 
 class SignupWindow {
 public:

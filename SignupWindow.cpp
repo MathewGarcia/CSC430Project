@@ -1,8 +1,6 @@
 #include "SignupWindow.h"
-#include <string>
 #include "USER.h"
 #include "UserManager.h"
-#include "DatabaseAPI.h"
 
 using namespace std;
 
@@ -90,6 +88,9 @@ void SignupWindow::handleSignup(HWND hwnd) {
     GetWindowTextW(hPassword, password, 100);
     GetWindowTextW(hRepeatPassword, repeatPassword, 100);
 
+    // Debug: Log the input values
+    std::wcout << L"Captured Username: " << username << L", Email: " << email << std::endl;
+
     // Convert wchar_t to string
     std::string sUsername(username, username + wcslen(username));
     std::string sEmail(email, email + wcslen(email));
@@ -113,9 +114,6 @@ void SignupWindow::handleSignup(HWND hwnd) {
         MessageBoxW(hwnd, L"Password must be at least 6 characters long.", L"Error", MB_OK | MB_ICONERROR);
         return;
     }
-
-    // Delegate the sign-up process to UserManager
-    UserManager userManager;
 
     try {
         // Use UserManager's sign-up method
