@@ -1,11 +1,10 @@
 #include "Bot.h"
 
 #include <iostream>
-#include <windows.h>
 #include "MessageHolder.h"
 #include <regex>
-
 #include "FindFile.h"
+
 
 using namespace std;
 

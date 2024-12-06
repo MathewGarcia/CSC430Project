@@ -2,4 +2,6 @@
 !*.cpp
 !*.h
 
+!CMakeLists.txt
+!CmakePresets.json
 !.gitignore
