@@ -37,6 +37,8 @@ public:
 	unique_ptr<Command> ActiveCommand = nullptr;
 
 	map<string, UserStates>Commands;
+	atomic<int> numOfActiveThreads{0};
+
 private:
 	UserStates currentState;
 	HWND hwnd;

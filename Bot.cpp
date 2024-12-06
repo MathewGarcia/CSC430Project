@@ -84,9 +84,8 @@ void Bot::executeCommand(const string& input)
 			break;  // Exit the case without executing the search
 		}
 			//thread safe int
-		atomic<int> numOfActiveThreads = -1;
 		//create new thread to search. DETATCH it so that it is asyc.
-		thread([this, input, &numOfActiveThreads]()
+		thread([this, input]()
 			{
 				//count the number of threads
 				++numOfActiveThreads;
@@ -114,14 +113,17 @@ void Bot::executeCommand(const string& input)
 				--numOfActiveThreads;
 
 				//if we have no more active threads, post command has finished.
-				if (numOfActiveThreads < 0)
+				if (numOfActiveThreads == 0)
 				{
 					if(ActiveCommand->cancelCommand)
 					{
 						PostMessage(hwnd, WM_UPDATE_CHAT, 0, (LPARAM)new std::string("Command Canceled \r\n"));
-						return;
+
 					}
-					PostMessage(hwnd, WM_UPDATE_CHAT, 0, (LPARAM)new std::string("Command finished."));
+					else {
+						PostMessage(hwnd, WM_UPDATE_CHAT, 0, (LPARAM)new std::string("Command finished."));
+					}
+					ActiveCommand = nullptr;
 
 				}
 			}).detach();

@@ -27,7 +27,7 @@ void FindFile::execute()
 		{
 			if (cancelCommand)
 			{
-				return;
+				break;
 			}
 			//so if it is NOT 1 then it is a file. (i.e, 0.)
 			if (!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
@@ -57,7 +57,7 @@ void FindFile::execute()
 		do {
 			if(cancelCommand)
 			{
-				return;
+				break;
 			}
 			//if the attributes is 1, then it is a directory
 			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)

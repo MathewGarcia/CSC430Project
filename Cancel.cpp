@@ -3,12 +3,14 @@
 
 void Cancel::execute()
 {
-	if(currentBot && currentBot->ActiveCommand)
+	if(currentBot && currentBot->ActiveCommand != nullptr)
 	{
 		currentBot->ActiveCommand->cancel();
 		PostMessage(hwnd, WM_UPDATE_CHAT, 0, (LPARAM)new std::string("Canceling command..."));
-
-
+	}
+	else
+	{
+		PostMessage(hwnd, WM_UPDATE_CHAT, 0, (LPARAM)new std::string("There is no command to cancel."));
 	}
 }
 
