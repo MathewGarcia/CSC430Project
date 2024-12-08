@@ -1,4 +1,5 @@
 #include "SignupWindow.h"
+#include <string>
 #include "USER.h"
 #include "UserManager.h"
 
@@ -88,9 +89,6 @@ void SignupWindow::handleSignup(HWND hwnd) {
     GetWindowTextW(hPassword, password, 100);
     GetWindowTextW(hRepeatPassword, repeatPassword, 100);
 
-    // Debug: Log the input values
-    std::wcout << L"Captured Username: " << username << L", Email: " << email << std::endl;
-
     // Convert wchar_t to string
     std::string sUsername(username, username + wcslen(username));
     std::string sEmail(email, email + wcslen(email));
@@ -115,15 +113,32 @@ void SignupWindow::handleSignup(HWND hwnd) {
         return;
     }
 
+    // Delegate the sign-up process to UserManager
+    //UserManager userManager;
+
+    DatabaseAPI dbAPI;
     try {
-        // Use UserManager's sign-up method
-        DatabaseAPI dbAPI; // Instantiate the API object
-        if (dbAPI.UserSignUp(sUsername, sPassword, sEmail)) {
+        // Call UserSignUp once and store the result
+        std::string rawResult = dbAPI.UserSignUp(sUsername, sPassword, sEmail);
+
+        // Strip quotes from the response
+        std::string result = rawResult;
+        if (!rawResult.empty() && rawResult.front() == '"' && rawResult.back() == '"') {
+            result = rawResult.substr(1, rawResult.size() - 2);
+        }
+
+        if (result == "success") {
             MessageBoxW(hwnd, L"Sign-up successful!", L"Success", MB_OK | MB_ICONINFORMATION);
-            navigateBack(hwnd);  // Navigate back to startup page
+            navigateBack(hwnd); // Navigate back to startup page
+        }
+        else if (result == "exist") {
+            MessageBoxW(hwnd, L"Username or email already exists. Please try a different one.", L"Error", MB_OK | MB_ICONERROR);
+        }
+        else if (result == "error") {
+            MessageBoxW(hwnd, L"An unexpected error occurred. Please try again later.", L"Error", MB_OK | MB_ICONERROR);
         }
         else {
-            MessageBoxW(hwnd, L"Username or email already exists. Please try a different one.", L"Error", MB_OK | MB_ICONERROR);
+            MessageBoxW(hwnd, L"Unknown response from server.", L"Error", MB_OK | MB_ICONERROR);
         }
     }
     catch (std::exception& e) {
