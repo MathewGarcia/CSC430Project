@@ -1,3 +1,5 @@
+#define CURL_STATICLIB
+
 #include "UserManager.h"
 #include <iostream>
 #include <string>
@@ -19,7 +21,7 @@ void UserManager::signIn()
 		getline(cin, password);
 
 		DatabaseAPI NewAPI;
-		if (NewAPI.UserLoginAuthentication(username, password) == true)
+		if (NewAPI.UserLoginAuthentication(username, password) == "success")
 		{
 			cout << "Login Success!" << endl;
 			break;
@@ -50,7 +52,7 @@ void UserManager::signUp()
 		getline(cin, email);
 
 		DatabaseAPI NewAPI;
-		if (NewAPI.UserSignUp(username, password, email) == true)
+		if (NewAPI.UserSignUp(username, password, email) == "success")
 		{
 			cout << "SignUp Success!" << endl;
 			break;
