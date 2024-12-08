@@ -1,6 +1,7 @@
 #include <iostream>
-#include <curl/curl.h>
 #include "DatabaseAPI.h"
+#include "curl/curl.h"
+
 
 size_t DatabaseAPI::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response) {
     size_t totalSize = size * nmemb;
@@ -8,12 +9,14 @@ size_t DatabaseAPI::WriteCallback(void* contents, size_t size, size_t nmemb, std
     return totalSize;
 }
 
-bool DatabaseAPI::UserLoginAuthentication(const std::string& username, const std::string& password) {
+string DatabaseAPI::UserLoginAuthentication(const string& username, const string& password)
+{
+
     CURL* curl;
     CURLcode res;
 
     // Supabase API URL for user login
-    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/authenticate_user_login";
+    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/userlogin";
 
     // JSON payload for user login
     std::string jsonData = R"({
@@ -47,41 +50,36 @@ bool DatabaseAPI::UserLoginAuthentication(const std::string& username, const std
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
-            return false;
-        } else {
+            return "failed";
+        }
+        else {
             /*std::cout << "Response from Supabase (Login): " << responseString << std::endl;*/
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
-            if (responseString == "true")
-                return true;
-            else
-                return false;
+            return responseString;
+
         }
-    } else {
-        std::cerr << "Failed to initialize CURL." << std::endl;
-        return false;
+
     }
+
 }
 
-bool DatabaseAPI::UserSignUp(const std::string& username, const std::string& password, const std::string& email) {
+string DatabaseAPI::UserSignUp(const string& username, const string& password, const string& email)
+{
     CURL* curl;
     CURLcode res;
 
     // Supabase API URL for inserting new users
-    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/user_signup";
+    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/usersignup";
 
     // JSON payload for user sign-up
     std::string jsonData = R"({
         "username": ")" + username + R"(",
         "password": ")" + password + R"(",
-        "email": ")" + email + R"("
+		"email": ")" + email + R"("
     })";
-
-    // Debug: Log the JSON payload(used to identify the insert user bug)
-    // std::wstring debugPayload = L"Constructed JSON Payload: " + std::wstring(jsonData.begin(), jsonData.end());
-    // MessageBoxW(NULL, debugPayload.c_str(), L"Debug - JSON Payload", MB_OK);
 
     // Initialize curl
     curl = curl_easy_init();
@@ -102,37 +100,22 @@ bool DatabaseAPI::UserSignUp(const std::string& username, const std::string& pas
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
 
-        // Enable verbose output for debugging(used to identify the insert user bug)
-        // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
         // Perform the request
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            // Debug: Log CURL errors(used to identify the insert user bug)
-            // std::wstring curlError = L"CURL Error: " + std::wstring(curl_easy_strerror(res), curl_easy_strerror(res) + strlen(curl_easy_strerror(res)));
-            // MessageBoxW(NULL, curlError.c_str(), L"Debug - CURL Error", MB_OK);
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
-            return false;
+            return "false";
         }
         else {
-            // Debug: Log the API response(used to identify the insert user bug)
-            // std::wstring debugResponse = L"API Response: " + std::wstring(responseString.begin(), responseString.end());
-            // MessageBoxW(NULL, debugResponse.c_str(), L"Debug - API Response", MB_OK);
+            /*std::cout << "Response from Supabase (Sign-Up): " << responseString << std::endl;*/
 
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
-            // Analyze the response
-            long http_code = 0;
-            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
-            return (http_code == 200);
+            return responseString;
         }
     }
-    else {
-        // MessageBoxW(NULL, L"Failed to initialize CURL.", L"Error - CURL Init", MB_OK | MB_ICONERROR);(used to identify the insert user bug)
-        std::cerr << "Failed to initialize CURL." << std::endl;
-    }
-    return false;  // Fallback if curl initialization fails
 }
