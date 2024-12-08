@@ -1,15 +1,12 @@
-#pragma once
 #include <string>
-#include <cstdint> // Include this for std::uint8_t
-#include <curl/curl.h>
 
 using namespace std;
 
 class DatabaseAPI
 {
 public:
-	bool UserLoginAuthentication(const string& username, const string& password);
-	bool UserSignUp(const string& username, const string& password, const string& email);
+	string UserLoginAuthentication(const string& username, const string& password);
+	string UserSignUp(const string& username, const string& password, const string& email);
 
 	// Callback function to capture the response
 	static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response);
