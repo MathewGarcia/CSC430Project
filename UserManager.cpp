@@ -1,5 +1,3 @@
-#define CURL_STATICLIB
-
 #include "UserManager.h"
 #include <iostream>
 #include <string>

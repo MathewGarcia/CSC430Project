@@ -1,5 +1,7 @@
+#pragma once
 #include <string>
-
+#include <cstdint> // Include this for std::uint8_t
+#include <curl/curl.h>
 using namespace std;
 
 class DatabaseAPI
