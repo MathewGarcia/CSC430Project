@@ -1,12 +1,28 @@
 #include <iostream>
 #include "DatabaseAPI.h"
 #include "curl/curl.h"
+#include <openssl/sha.h> // Required for password hashing
+#include <iomanip>
+#include <sstream>
 
 
 size_t DatabaseAPI::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response) {
     size_t totalSize = size * nmemb;
     response->append((char*)contents, totalSize);
     return totalSize;
+}
+
+// Function to hash the password using SHA256
+std::string DatabaseAPI::hashPassword(const std::string& password) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+	SHA256(reinterpret_cast<const unsigned char*>(password.c_str()), password.size(), hash);
+
+    // Convert the hash to a hexadecimal string
+    std::ostringstream hashedPasswordStream;
+	for (unsigned char c : hash) { // Iterate over each byte in the hash
+        hashedPasswordStream << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(c);
+    }
+    return hashedPasswordStream.str(); 
 }
 
 string DatabaseAPI::UserLoginAuthentication(const string& username, const string& password)
@@ -18,10 +34,13 @@ string DatabaseAPI::UserLoginAuthentication(const string& username, const string
     // Supabase API URL for user login
     std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/userlogin";
 
+    // Hash the password
+    std::string hashedPassword = hashPassword(password);
+
     // JSON payload for user login
     std::string jsonData = R"({
         "username": ")" + username + R"(",
-        "password": ")" + password + R"("
+        "password": ")" + hashedPassword + R"("
     })";
 
     // Initialize curl
@@ -53,17 +72,14 @@ string DatabaseAPI::UserLoginAuthentication(const string& username, const string
             return "failed";
         }
         else {
-            /*std::cout << "Response from Supabase (Login): " << responseString << std::endl;*/
-
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
             return responseString;
-
         }
-
     }
 
+    return "error"; // CURL initialization failed
 }
 
 string DatabaseAPI::UserSignUp(const string& username, const string& password, const string& email)
@@ -74,11 +90,14 @@ string DatabaseAPI::UserSignUp(const string& username, const string& password, c
     // Supabase API URL for inserting new users
     std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/usersignup";
 
+    // Hash the password
+    std::string hashedPassword = hashPassword(password);
+
     // JSON payload for user sign-up
     std::string jsonData = R"({
         "username": ")" + username + R"(",
-        "password": ")" + password + R"(",
-		"email": ")" + email + R"("
+        "password": ")" + hashedPassword + R"(",
+        "email": ")" + email + R"("
     })";
 
     // Initialize curl
@@ -110,12 +129,12 @@ string DatabaseAPI::UserSignUp(const string& username, const string& password, c
             return "false";
         }
         else {
-            /*std::cout << "Response from Supabase (Sign-Up): " << responseString << std::endl;*/
-
             curl_slist_free_all(headers);
             curl_easy_cleanup(curl);
 
             return responseString;
         }
     }
+
+    return "error"; // CURL initialization failed
 }

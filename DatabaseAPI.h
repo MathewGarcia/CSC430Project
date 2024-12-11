@@ -15,4 +15,8 @@ public:
 
 private:
 	const string apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwZGx1d2hmeGZtbHNxZnBib3VrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5OTAwMDksImV4cCI6MjA0NzU2NjAwOX0.AbjEaGCgHtLReH_rO_XTerk-EgwrDcBZpisov061Sfs";
+
+	// function to hash passwords
+	std::string hashPassword(const std::string& password);
+
 };
