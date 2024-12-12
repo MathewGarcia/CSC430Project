@@ -32,7 +32,7 @@ string DatabaseAPI::UserLoginAuthentication(const string& username, const string
     CURLcode res;
 
     // Supabase API URL for user login
-    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/userlogin";
+    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/userlogintest";
 
     // Hash the password
     std::string hashedPassword = hashPassword(password);
@@ -88,7 +88,7 @@ string DatabaseAPI::UserSignUp(const string& username, const string& password, c
     CURLcode res;
 
     // Supabase API URL for inserting new users
-    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/usersignup";
+    std::string apiUrl = "https://rpdluwhfxfmlsqfpbouk.supabase.co/rest/v1/rpc/usersignuptest";
 
     // Hash the password
     std::string hashedPassword = hashPassword(password);
