@@ -1,7 +1,7 @@
 #include <iostream>
 #include "DatabaseAPI.h"
 #include "curl/curl.h"
-#include <openssl/sha.h> // Required for password hashing
+//#include <openssl/sha.h> // Required for password hashing
 #include <iomanip>
 #include <sstream>
 
