@@ -8,32 +8,32 @@
 #include "BotWindow.h"
 
 void StartWindow::startWin(HINSTANCE hInstance, int nCmdShow) {
-	const wchar_t CLASS_NAME[] = L"StartWindow";
+    const wchar_t CLASS_NAME[] = L"StartWindow";
 
-	WNDCLASS wc = {};
+    WNDCLASS wc = {};
 
-	wc.lpfnWndProc = StartWindow::WndProc;
-	wc.hInstance = hInstance;
-	wc.lpszClassName = CLASS_NAME;
+    wc.lpfnWndProc = StartWindow::WndProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = CLASS_NAME;
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // Sets the background to the default window color
-	RegisterClassW(&wc);
+    RegisterClassW(&wc);
 
-	HWND hwnd = CreateWindowExW(
-		0, CLASS_NAME,
-		L"SignUp/SignIn",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME,
-		CW_USEDEFAULT,CW_USEDEFAULT,600,400,
-		NULL,NULL,hInstance,this);
+    HWND hwnd = CreateWindowExW(
+        0, CLASS_NAME,
+        L"SignUp/SignIn",
+        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME,
+        CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+        NULL, NULL, hInstance, this);
 
-	if (hwnd == NULL) return;
+    if (hwnd == NULL) return;
 
-	ShowWindow(hwnd, nCmdShow);
+    ShowWindow(hwnd, nCmdShow);
 
-	MSG msg = {};
-	while (GetMessage(&msg, NULL, 0, 0)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+    MSG msg = {};
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
 
 }
 
@@ -112,10 +112,14 @@ LRESULT CALLBACK StartWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
                     botWindow.startBotWindow(GetModuleHandle(NULL), SW_SHOW);
 
                 }
+                else if (response == "\"incorrect\"")
+                {
+                    MessageBoxW(NULL, L"Username or Password incorrect!", L"Error", MB_OK);
+
+                }
                 else
                 {
-                    MessageBoxW(NULL, L"Login Failed.", L"Error", MB_OK);
-
+                    MessageBoxW(NULL, L"Unexpected Error! Please try again later.", L"Error", MB_OK);
                 }
 
                 OutputDebugStringA(response.c_str());
@@ -159,27 +163,27 @@ LRESULT CALLBACK StartWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 
 /* Commenting out OpenSignUp because it is no longer needed
 void StartWindow::OpenSignUp(HWND parentHwnd) {
-	MessageBoxW(parentHwnd, L"Sign Up Window Functionality Coming Soon", L"Sign Up", MB_OK);
+    MessageBoxW(parentHwnd, L"Sign Up Window Functionality Coming Soon", L"Sign Up", MB_OK);
 }
 */
 
 void StartWindow::ClearChildren(HWND hwnd)
 {
     HWND child = GetWindow(hwnd, GW_CHILD);
-    while(child)
+    while (child)
     {
         DestroyWindow(child);
         child = GetWindow(hwnd, GW_CHILD);
     }
 }
 
-void StartWindow::OpenSignIn(HWND parentHwnd,HWND& hUsernameEditText, HWND& hPasswordEditText) {
+void StartWindow::OpenSignIn(HWND parentHwnd, HWND& hUsernameEditText, HWND& hPasswordEditText) {
     ClearChildren(parentHwnd);
-   hUsernameEditText =  CreateWindowW(L"EDIT", L"Username",
+    hUsernameEditText = CreateWindowW(L"EDIT", L"Username",
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,
         50, 50, 200, 25,
         parentHwnd, NULL, NULL, NULL);
- hPasswordEditText =  CreateWindowW(L"EDIT", L"Password",
+    hPasswordEditText = CreateWindowW(L"EDIT", L"Password",
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,
         50, 90, 200, 25,
         parentHwnd, NULL, NULL, NULL);
