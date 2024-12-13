@@ -16,7 +16,12 @@ void SignupWindow::signWin(HINSTANCE hInstance, int nCmdShow) {
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // Sets the background to the default window color
     RegisterClassW(&wc);
     //added new styles to fix resizing issues
-    HWND hwnd = CreateWindowExW(0, CLASS_NAME, L"Sign Up", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME, CW_USEDEFAULT, CW_USEDEFAULT, 600, 400, NULL, NULL, hInstance, this);
+    HWND hwnd = CreateWindowExW(
+     0, CLASS_NAME,
+     L"Sign Up",
+     WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,  // Disable resizing and maximizing
+     CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+     NULL, NULL, hInstance, this);
     if (hwnd == NULL) return;
 
     ShowWindow(hwnd, nCmdShow);
