@@ -44,6 +44,8 @@ add_executable(CSC430Project WIN32
     StartWindow.h
     SignupWindow.cpp
     SignupWindow.h
+    BotWindow.h
+    BotWindow.cpp
 )
 
 # Include directories for CURL, OpenSSL, and Zlib
