@@ -21,7 +21,7 @@ void StartWindow::startWin(HINSTANCE hInstance, int nCmdShow) {
     HWND hwnd = CreateWindowExW(
         0, CLASS_NAME,
         L"SignUp/SignIn",
-        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_THICKFRAME,
+        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, // No resize or maximize
         CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
         NULL, NULL, hInstance, this);
 
@@ -148,7 +148,9 @@ LRESULT CALLBACK StartWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 
             if (currentScreen == 2)
             {
-                TextOutW(hdc, 50, 10, L"Sign In Screen", 20);
+                TextOutW(hdc, 50, 10, L"Sign In Screen", 14);
+                TextOutW(hdc, 50, 50, L"Username:", 9);
+                TextOutW(hdc, 50, 90, L"Password:", 9);
             }
             EndPaint(hwnd, &ps);
             break;
@@ -179,13 +181,13 @@ void StartWindow::ClearChildren(HWND hwnd)
 
 void StartWindow::OpenSignIn(HWND parentHwnd, HWND& hUsernameEditText, HWND& hPasswordEditText) {
     ClearChildren(parentHwnd);
-    hUsernameEditText = CreateWindowW(L"EDIT", L"Username",
+    hUsernameEditText = CreateWindowW(L"EDIT", NULL,
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,
-        50, 50, 200, 25,
+        150, 50, 200, 25,
         parentHwnd, NULL, NULL, NULL);
-    hPasswordEditText = CreateWindowW(L"EDIT", L"Password",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER,
-        50, 90, 200, 25,
+    hPasswordEditText = CreateWindowW(L"EDIT", NULL,
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD,
+        150, 90, 200, 25,
         parentHwnd, NULL, NULL, NULL);
     CreateWindowW(L"BUTTON", L"Submit",
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
@@ -202,12 +204,12 @@ void StartWindow::BeginningButtons(HWND hwnd)
     //SignUp Button
     CreateWindowW(L"BUTTON", L"Sign Up",
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-        50, 50, 100, 30,
+        210, 50, 150, 50,
         hwnd, (HMENU)1, NULL, NULL);
     //SignIn Button
     CreateWindowW(L"BUTTON", L"Sign In",
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-        200, 50, 100, 30,
+        210, 160, 150, 50,
         hwnd, (HMENU)2, NULL, NULL); // Changed identifier to 2 for Sign In button
 }
 
