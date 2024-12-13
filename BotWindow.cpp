@@ -2,7 +2,7 @@
 #include <iosfwd>
 #include <string>
 #include <sstream>
-#include "../Bot.h"
+#include "Bot.h"
 #define WM_UPDATE_CHAT (WM_USER +1)
 
 
